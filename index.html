@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ryklin Capital Holdings</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Embedded Styles -->
+  <style>
+  /* ==============================
+     THEME VARIABLES (Light/Dark)
+  ============================== */
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f6f8fb;
+    --text: #0a1f44;
+    --muted: #6c778a;
+    --primary: #0a1f44;
+    --accent: #c9a227;
+    --card: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(10, 31, 68, 0.1);
+    --shadow: 0 10px 30px rgba(0,0,0,0.06);
+    --hero-grad: linear-gradient(145deg, #ffffff 0%, #e8ecf5 100%);
+    --radius: 14px;
+    --speed: 280ms;
+  }
+
+  body.dark {
+    --bg: #0d0f13;
+    --bg-soft: #0b0d11;
+    --text: #e9edf4;
+    --muted: #aab3c0;
+    --primary: #10141b;
+    --accent: #d4b252;
+    --card: rgba(18, 22, 29, 0.6);
+    --card-border: rgba(255,255,255,0.08);
+    --shadow: 0 14px 40px rgba(0,0,0,0.35);
+    --hero-grad: radial-gradient(1200px 400px at 70% -10%, #1a2029 0%, #0d0f13 60%, #0b0d11 100%);
+  }
+
+  /* ==============================
+     GLOBAL
+  ============================== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    background: var(--bg); color: var(--text); line-height: 1.7;
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    transition: background var(--speed), color var(--speed);
+  }
+
+  .container { width: min(90%, 1200px); margin: auto; padding: 60px 0; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media (max-width: 900px){ .split { grid-template-columns: 1fr; } }
+  img { max-width: 100%; display: block; }
+
+  /* ==============================
+     HEADER & NAV
+  ============================== */
+  .site-header {
+    position: sticky; top: 0; z-index: 1000;
+    background: var(--bg);
+    border-bottom: 1px solid var(--card-border);
+    backdrop-filter: blur(10px);
+  }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
+  .logo img { height: 48px; }
+
+  nav { display: flex; align-items: center; gap: 14px; }
+  nav a {
+    text-decoration: none; color: var(--text); font-weight: 500;
+    position: relative; padding: 8px 10px; transition: color var(--speed);
+  }
+  /* Gold underline animation */
+  nav a:not(.btn)::after {
+    content: ""; position: absolute; left: 10px; right: 10px; bottom: 3px; height: 2px;
+    transform: scaleX(0); transform-origin: left;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    transition: transform var(--speed);
+  }
+  nav a:hover { color: var(--accent); }
+  nav a:hover::after { transform: scaleX(1); }
+  /* Active link */
+  nav a.active { color: var(--accent); }
+  nav a.active::after { transform: scaleX(1); }
+
+  /* Dark mode toggle */
+  .theme-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--bg-soft); border: 1px solid var(--card-border);
+    cursor: pointer; transition: var(--speed);
+  }
+  .theme-toggle:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .theme-toggle svg { width: 20px; height: 20px; stroke: var(--text); }
+  .theme-toggle .sun { display: inline; } .theme-toggle .moon { display: none; }
+  body.dark .theme-toggle .sun { display: none; } body.dark .theme-toggle .moon { display: inline; }
+
+  /* ==============================
+     HERO
+  ============================== */
+  .hero {
+    text-align: center; background: var(--hero-grad);
+    padding: 120px 20px; border-radius: var(--radius);
+    box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .hero h1 { font-size: clamp(2.2rem, 4vw, 3rem); margin-bottom: 18px; }
+  .hero .sub { max-width: 900px; margin: 0 auto 36px; color: var(--muted); font-size: 1.1rem; }
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ==============================
+     BUTTONS
+  ============================== */
+  .btn {
+    display: inline-block; background: --primary; background: var(--primary);
+    color: #fff; padding: 14px 22px; border-radius: var(--radius);
+    font-weight: 600; text-decoration: none; transition: var(--speed);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.10);
+  }
+  .btn:hover { background: var(--accent); color: #10141b; transform: translateY(-3px); }
+  .btn.small { padding: 10px 14px; }
+  .btn.ghost { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn.ghost:hover { background: var(--primary); color: #fff; }
+
+  /* ==============================
+     SECTION HEADERS
+  ============================== */
+  .section-head { display: grid; place-items: center; margin-bottom: 26px; }
+  .section-head .accent {
+    width: 120px; height: 3px; border-radius: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: .85;
+  }
+  h2 { text-align: center; font-size: clamp(1.6rem, 2.5vw, 2.1rem); margin-bottom: 10px; }
+
+  /* ==============================
+     CARDS / SERVICES
+  ============================== */
+  .service-grid {
+    display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .card, .service {
+    background: var(--card); backdrop-filter: blur(8px);
+    border: 1px solid var(--card-border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 26px; transition: var(--speed);
+  }
+  .card:hover, .service:hover { transform: translateY(-5px); border-color: var(--accent); }
+  .service h3 { margin-bottom: 10px; font-size: 1.14rem; }
+  .service ul { list-style: none; }
+  .service li { color: var(--muted); margin: 8px 0; }
+
+  /* ==============================
+     REGIONS
+  ============================== */
+  .regions { list-style: none; padding: 0; margin: 0 auto; display: grid; gap: 10px; max-width: 760px; }
+  .regions li {
+    padding: 12px 16px; border-radius: 12px;
+    border: 1px dashed var(--card-border);
+    background: color-mix(in oklab, var(--bg) 70%, transparent);
+  }
+
+  /* ==============================
+     CONTACT
+  ============================== */
+  .contact-info h3 { margin: 8px 0 14px; }
+  .phone-numbers { display: flex; gap: 10px; flex-wrap: wrap; }
+  .phone-link {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text);
+    border: 1px solid var(--card-border); border-radius: 10px; padding: 8px 12px;
+    background: color-mix(in oklab, var(--bg) 70%, transparent);
+    transition: transform var(--speed), border-color var(--speed);
+  }
+  .phone-link:hover { transform: translateY(-2px); border-color: var(--accent); }
+
+  .contact-form { margin-top: 18px; }
+  .contact-form .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px){ .contact-form .grid { grid-template-columns: 1fr; } }
+  .contact-form label span { display: block; font-size: .95rem; color: var(--muted); margin: 6px 0; }
+  .contact-form input, .contact-form textarea, .contact-form select {
+    width: 100%; padding: 12px 14px; font-size: 1rem; border-radius: 12px;
+    border: 1px solid var(--card-border);
+    background: color-mix(in oklab, var(--bg) 70%, transparent); color: var(--text);
+    transition: border-color var(--speed), box-shadow var(--speed);
+  }
+  .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 20%, transparent);
+  }
+  .hidden { display: none !important; }
+
+  /* ==============================
+     FOOTER
+  ============================== */
+  .site-footer { background: var(--primary); color: #fff; padding: 46px 0; margin-top: 40px; }
+  .footer-content { display: grid; gap: 20px; }
+  .footer-logo { height: 40px; }
+  .footer-tagline { opacity: .85; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .footer-bottom a { color: var(--accent); text-decoration: none; }
+
+  /* ==============================
+     REVEAL ANIMATIONS
+  ============================== */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease-out, transform .8s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ==============================
+     BACK TO TOP BUTTON
+  ============================== */
+  .back-to-top-btn {
+    position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px; z-index: 999;
+    display: none; align-items: center; justify-content: center;
+    border-radius: 50%; border: none; cursor: pointer;
+    background: var(--primary); color: #fff; font-size: 22px;
+    box-shadow: var(--shadow); transition: background var(--speed), transform var(--speed);
+  }
+  .back-to-top-btn:hover { background: var(--accent); transform: translateY(-3px); }
+  body.dark .back-to-top-btn { background: var(--primary); }
+
+  /* ==============================
+     RESPONSIVE
+  ============================== */
+  @media (max-width: 768px){
+    .hero h1 { font-size: 2.2rem; }
+    nav { gap: 10px; }
+    .btn { padding: 12px 20px; }
+  }
+  </style>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container nav">
+      <a class="logo" href="#home">
+        <!-- You may need to adjust the path for your logo image -->
+        <img src="assets/logo.png" alt="Ryklin Capital Holdings logo" />
+      </a>
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#regions">Regions</a>
+        <a href="#partners">Partner</a>
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <!-- Sun (light mode icon) -->
+          <svg class="sun" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M12 2v2m0 16v2M4.93 4.93 6.34 6.34M17.66 17.66l1.41 1.41M2 12h2m16 0h2M4.93 19.07 6.34 17.66M17.66 6.34l1.41-1.41"
+                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <!-- Moon (dark mode icon) -->
+          <svg class="moon" viewBox="0 0 24 24" fill="none">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
+                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <a href="#contact" class="btn small">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <!-- Hero -->
+    <section class="hero container">
+      <h1>Global Structuring | Strategic Capital | Bespoke Solutions |</h1>
+      <p class="sub">
+        Ryklin Capital Holdings operates across financial structuring, strategic advisory, and international asset optimization,
+        connecting clients with opportunities across Dubai, Saudi Arabia, and beyond.
+      </p>
+      <div class="cta">
+        <a href="#services" class="btn">Our Services</a>
+        <a href="#partners" class="btn ghost">Partner With Us</a>
+        <a href="#contact" class="btn ghost">Contact</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="container split">
+      <div>
+        <div class="section-head">
+          <h2>Who We Are</h2>
+          <div class="accent"></div>
+        </div>
+        <p>
+          Ryklin Capital Holdings is a boutique multi sector firm specializing in financial structuring,
+          offshore company setups, and global capital advisory. Founded by a network of partners with
+          experience across finance, trade, and corporate advisory, our mission is to bridge GCC and
+          international markets.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Core Philosophy</h3>
+        <p>
+          We operate discreetly, strategically, and with precision, aligning capital, structure, and opportunity under one roof.
+        </p>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="container">
+      <div class="section-head">
+        <h2>Services</h2>
+        <div class="accent"></div>
+      </div>
+      <div class="service-grid">
+        <article class="service">
+          <h3>Corporate Structuring &amp; Setup</h3>
+          <ul>
+            <li>Offshore and onshore company formations</li>
+            <li>Holding company frameworks</li>
+            <li>Multi jurisdiction entity structuring</li>
+            <li>Compliance, legal documentation, and banking coordination</li>
+          </ul>
+        </article>
+        <article class="service">
+          <h3>Banking &amp; Financial Services</h3>
+          <ul>
+            <li>Global bank account setup (Private, Corporate, Offshore)</li>
+            <li>Assistance in Saudi Arabia, UAE, and GCC financial onboarding</li>
+            <li>Payment gateway and fintech integration</li>
+            <li>Capital flow management solutions</li>
+          </ul>
+        </article>
+        <article class="service">
+          <h3>Investment &amp; Capital Advisory</h3>
+          <ul>
+            <li>Private investment sourcing and deal structuring</li>
+            <li>Venture and growth stage advisory</li>
+            <li>Capital syndication and investor relations</li>
+            <li>Portfolio setup for high net worth individuals</li>
+          </ul>
+        </article>
+        <article class="service">
+          <h3>Strategic Partnerships &amp; Expansion</h3>
+          <ul>
+            <li>Market entry into the GCC</li>
+            <li>Joint venture and partnership structuring</li>
+            <li>Licensing and local representation support</li>
+            <li>Strategic advisory for global firms entering the Middle East</li>
+          </ul>
+        </article>
+        <article class="service">
+          <h3>Asset &amp; Wealth Planning</h3>
+          <ul>
+            <li>Offshore trusts and asset protection structures</li>
+            <li>Family office coordination</li>
+            <li>Real estate holding structures</li>
+            <li>Succession and tax efficient wealth migration</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Regions -->
+    <section id="regions" class="container">
+      <div class="section-head">
+        <h2>Regions We Serve</h2>
+        <div class="accent"></div>
+      </div>
+      <ul class="regions">
+        <li>Saudi Arabia 🇸🇦</li>
+        <li>United Arab Emirates (Dubai, Abu Dhabi) 🇦🇪</li>
+        <li>GCC Region (Qatar, Bahrain, Oman, Kuwait)</li>
+        <li>Europe &amp; UK (Through partner networks)</li>
+      </ul>
+    </section>
+
+    <!-- Partners -->
+    <section id="partners" class="container split">
+      <div>
+        <div class="section-head">
+          <h2>Partnership &amp; Collaboration</h2>
+          <div class="accent"></div>
+        </div>
+        <p>
+          Ryklin works both directly with clients and in strategic partnership with firms to deliver tailored financial
+          and structural solutions. We collaborate with institutional partners, legal firms, and advisors to enhance
+          international market access.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Optional Add-ons</h3>
+        <ul>
+          <li>Case Studies / Insights, discreet success examples</li>
+          <li>Partner Portal for B2B collaboration</li>
+          <li>News / Market Updates to show firm activity and credibility</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="container">
+      <div class="section-head">
+        <h2>Confidential Inquiry</h2>
+        <div class="accent"></div>
+      </div>
+      <p>All consultations are private and handled by our partner team.</p>
+
+      <div class="contact-info">
+        <h3>Direct Contact</h3>
+        <div class="phone-numbers">
+          <a href="tel:+971553132078" class="phone-link"><span class="flag">🇦🇪</span> +971 553 132 078</a>
+          <a href="tel:+447799637869" class="phone-link"><span class="flag">🇬🇧</span> +44 7799 637 869</a>
+          <a href="tel:+447721936174" class="phone-link"><span class="flag">🇬🇧</span> +44 7721 936 174</a>
+        </div>
+      </div>
+
+      <form class="contact-form" method="POST" name="contact">
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="hidden">
+          <label>Do not fill this out: <input name="bot-field" /></label>
+        </p>
+
+        <div class="grid">
+          <label>
+            <span>Name *</span>
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            <span>Email *</span>
+            <input type="email" name="email" required />
+          </label>
+        </div>
+
+        <div class="grid">
+          <label>
+            <span>Company</span>
+            <input type="text" name="company" />
+          </label>
+          <label>
+            <span>Country</span>
+            <input type="text" name="country" />
+          </label>
+        </div>
+
+        <label>
+          <span>Service Required *</span>
+          <select name="service" required>
+            <option value="">Select a service</option>
+            <option>Corporate Structuring &amp; Setup</option>
+            <option>Banking &amp; Financial Services</option>
+            <option>Investment &amp; Capital Advisory</option>
+            <option>Strategic Partnerships &amp; Expansion</option>
+            <option>Asset &amp; Wealth Planning</option>
+            <option>Other</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Message</span>
+          <textarea name="message" rows="5" placeholder="Share context or requirements"></textarea>
+        </label>
+
+        <button type="submit" class="btn">Send Inquiry</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-sections">
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#regions">Regions</a></li>
+          <li><a href="#partners">Partnership</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>WhatsApp</h4>
+        <ul>
+          <li><a href="tel:+971553132078">+971 553 132 078</a></li>
+          <li><a href="tel:+447799637869">+44 7799 637 869</a></li>
+          <li><a href="tel:+447721936174">+44 7721 936 174</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Email</h4>
+        <ul>
+          <li><a href="mailto:contact@ryklinholdings.com">contact@ryklinholdings.com</a></li>
+          <li><a href="mailto:partners@ryklinholdings.com">partners@ryklinholdings.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Connect</h4>
+        <ul class="social-links">
+          <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <p>Confidential ✓ | Licensed ✓ | All Rights Reserved</p>
+      <p>By accessing this site, you agree to our terms of use. This website does not constitute financial advice.</p>
+      <p>Privacy Policy | Terms of Service</p>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Ryklin Capital Holdings</span>
+      <a href="#home" class="back-to-top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top-btn" aria-label="Back to top">↑</button>
+
+  <!-- Embedded Scripts -->
+  <script>
+  /* =====================================================
+     DARK MODE TOGGLE (with persistence)
+  ===================================================== */
+  (function () {
+    const STORAGE_KEY = 'ryklin-theme';
+    const body = document.body;
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved === 'dark') body.classList.add('dark');
+    if (saved === 'light') body.classList.remove('dark');
+
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const isDark = body.classList.toggle('dark');
+        localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light');
+      });
+    }
+  })();
+
+  /* =====================================================
+     SCROLL REVEAL (fluid fade + slide)
+  ===================================================== */
+  (function () {
+    const targets = document.querySelectorAll('section, .service, .card, .service-grid, .regions, .contact-form, footer');
+    targets.forEach(el => el.classList.add('reveal'));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+    targets.forEach(el => io.observe(el));
+  })();
+
+  /* =====================================================
+     ACTIVE NAV LINK ON SCROLL
+  ===================================================== */
+  (function () {
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll("nav a[href^='#']");
+
+    function activateNav() {
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 120; // account for sticky header
+        const height = section.offsetHeight;
+        if (window.pageYOffset >= top && window.pageYOffset < top + height) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      });
+    }
+
+    window.addEventListener('scroll', activateNav, { passive: true });
+    window.addEventListener('load', activateNav);
+  })();
+
+  /* =====================================================
+     BACK TO TOP BUTTON
+  ===================================================== */
+  (function () {
+    const btn = document.getElementById('backToTop');
+    if (!btn) return;
+
+    const toggleBtn = () => {
+      btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    };
+
+    window.addEventListener('scroll', toggleBtn, { passive: true });
+    window.addEventListener('load', toggleBtn);
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+
+  /* =====================================================
+     AUTO YEAR IN FOOTER
+  ===================================================== */
+  (function () {
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
+  })();
+  </script>
+</body>
+</html>
